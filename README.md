@@ -1,0 +1,2 @@
+# MultinomialLogisticRegression
+Project Skripsi R
