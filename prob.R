@@ -23,6 +23,6 @@ prob <- function(x.design.1,beta.1.temp){
       p.temp[i,j] <- nom[i,j]/denom[i,1]
     }
   }
-  
+   
   return(p.temp)
 }
