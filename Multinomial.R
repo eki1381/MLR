@@ -1,7 +1,7 @@
 multinomial <- function(y,x){
   library(Matrix)
   library(MASS)
-  
+
   y.design.1 <- model.matrix(~-1 + .,data = y)
   x.design.1 <- model.matrix(~.,data = x)
   N <- nrow(y.design.1)
