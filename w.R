@@ -19,3 +19,5 @@ w <- function(p.temp,J,N){
   w <- do.call(rbind,lapply(seq(dim(ar5)[3]), function(i) ar5[,,i]))
   return(w)
 }
+
+
