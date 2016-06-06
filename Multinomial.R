@@ -7,7 +7,7 @@ multinomial <- function(y,x){
   N <- nrow(y.design.1)
   K <- ncol(x.design.1) - 1
   J <- ncol(y.design.1)
-  y.design.2 <- y.design.1[,1:(J-1)]
+  y.design.2 <- y.design.1[,2:J]
   y.design.3 <- as.vector(y.design.2)
   list <- rep(list(x.design.1),J-1)
   x.design.2 <- as.matrix(bdiag(list))
@@ -36,5 +36,6 @@ multinomial <- function(y,x){
     beta.1.temp <- matrix(beta.1,K+1,J-1)
     diff.beta <- sqrt(sum((beta.1-beta.2)^2))
   }
+  
   return(beta.1.temp)
 }
