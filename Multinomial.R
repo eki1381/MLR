@@ -1,5 +1,6 @@
 multinomial <- function(y,x){
   library(Matrix)
+  library(MASS)
   
   y.design.1 <- model.matrix(~-1 + .,data = y)
   x.design.1 <- model.matrix(~.,data = x)
@@ -7,6 +8,7 @@ multinomial <- function(y,x){
   K <- ncol(x.design.1) - 1
   J <- ncol(y.design.1)
   y.design.2 <- y.design.1[,1:(J-1)]
+  y.design.3 <- as.vector(y.design.2)
   list <- rep(list(x.design.1),J-1)
   x.design.2 <- as.matrix(bdiag(list))
   
@@ -15,5 +17,24 @@ multinomial <- function(y,x){
   beta.2 <- rep(-Inf,length(beta.1))
   diff.beta <- sqrt(sum((beta.1-beta.2)^2))
   
-  return(diff.beta)
+  iterations <- 1
+  while(diff.beta > 1e-6 & iterations <= 30){
+    print(iterations)
+    print(diff.beta)
+    iterations <- iterations + 1
+    p.temp <- prob(x.design.1,beta.1.temp)
+    p <- as.vector(p.temp)
+    
+    w <- w(p.temp,J,N)
+    
+    der1.llike <- t(x.design.2)%*%(y.design.3-p)
+    der2.llike <- t(x.design.2)%*%w%*%x.design.2
+    
+    beta.2 <- beta.1
+    beta.1 <- beta.2 +(chol2inv(chol(der2.llike))%*%der1.llike)
+    
+    beta.1.temp <- matrix(beta.1,K+1,J-1)
+    diff.beta <- sqrt(sum((beta.1-beta.2)^2))
+  }
+  return(beta.1.temp)
 }
